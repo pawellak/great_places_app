@@ -5,6 +5,7 @@ import 'package:places_app/screens/add_place_screen.dart';
 import 'package:places_app/screens/places_list_screen.dart';
 import 'package:provider/provider.dart';
 
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
   }
 
   Map<String, WidgetBuilder> buildRoutes() =>
-      {AddPlaceScreen.routeName: (context) => const AddPlaceScreen()};
+      {AddPlaceScreen.routeName: (context) => const AddPlaceScreen(),
+      PlacesListScreen.routeName:(context) =>const PlacesListScreen()};
 
   ThemeData buildThemeData() {
     return ThemeData(

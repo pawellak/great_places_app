@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:places_app/providers/great_places.dart';
+import 'package:places_app/screens/places_list_screen.dart';
 import 'package:places_app/widgets/image_inputs.dart';
+import 'package:provider/provider.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = '/add-place';
@@ -12,6 +16,21 @@ class AddPlaceScreen extends StatefulWidget {
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  File? _pickedImage;
+
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
+  void _savePlace() {
+    if (_titleController.text.isEmpty || (_pickedImage == null)) {
+      return;
+    }
+
+    Provider.of<GreatPlaces>(context, listen: false)
+        .addPlace(_titleController.text, _pickedImage);
+    Navigator.of(context).pop(PlacesListScreen.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +43,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   Column buildBody() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [buildExpanded(), buildElevatedButton()],
+      children: [buildTitleFieldAndImage(), buildAddPlaceButton()],
     );
   }
 
-  ElevatedButton buildElevatedButton() {
+  ElevatedButton buildAddPlaceButton() {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () => _savePlace(),
       icon: const Icon(Icons.add),
       label: const Text('Add Place'),
       style: ElevatedButton.styleFrom(
@@ -41,7 +60,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     );
   }
 
-  Expanded buildExpanded() {
+  Expanded buildTitleFieldAndImage() {
     return Expanded(
         child: SingleChildScrollView(
       child: Padding(
@@ -55,7 +74,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             const SizedBox(
               height: 10,
             ),
-            const ImageInputs()
+            ImageInputs(onSelectImage: _selectImage)
           ],
         ),
       ),
