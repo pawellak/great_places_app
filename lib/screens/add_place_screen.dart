@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:places_app/models/place.dart';
 import 'package:places_app/providers/great_places.dart';
 import 'package:places_app/screens/places_list_screen.dart';
 import 'package:places_app/widgets/image_inputs.dart';
@@ -18,18 +19,24 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _pickedImage;
+  PlaceLocation? _pickedLocation;
 
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
   }
 
+  void _selectPlace(double lat, double lnb)
+  {
+    _pickedLocation=PlaceLocation(latitude: lat, longitude: lnb, address: '');
+  }
+
   void _savePlace() {
-    if (_titleController.text.isEmpty || (_pickedImage == null)) {
+    if (_titleController.text.isEmpty || (_pickedImage == null||_pickedLocation==null)) {
       return;
     }
 
     Provider.of<GreatPlaces>(context, listen: false)
-        .addPlace(_titleController.text, _pickedImage);
+        .addPlace(_titleController.text, _pickedImage,_pickedLocation!);
     Navigator.of(context).pop(PlacesListScreen.routeName);
   }
 
@@ -79,7 +86,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             const SizedBox(
               height: 10,
             ),
-            const LocationInput(),
+             LocationInput(onSelectPlace: _selectPlace),
           ],
         ),
       ),

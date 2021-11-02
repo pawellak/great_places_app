@@ -30,8 +30,8 @@
 .pub-cache/
 .pub/
 /build/
-/android/app/src/main/AndroidManifest.xml
-/android/app/build.gradle
+android/app/src/main/AndroidManifest.xml
+android/app/build.gradle
 lib/helpers/location_helper.dart
 
 
