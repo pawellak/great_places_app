@@ -42,6 +42,11 @@ class GreatPlaces with ChangeNotifier {
     });
   }
 
+  Place findById(String id)
+  {
+    return _items.firstWhere((element) => element.id==id);
+  }
+
   Future<void> fetchAndSetPlaces() async {
     final dataList = await DBHelper.getData('user_places');
 

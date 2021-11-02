@@ -30,11 +30,14 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-        markers: _pickedLocation == null
+        markers: (_pickedLocation == null && widget.isSelecting)
             ? {}
             : {
                 Marker(
-                    position: _pickedLocation!, markerId: const MarkerId('m1'))
+                    position: _pickedLocation ??
+                        LatLng(widget.initialLocation.latitude,
+                            widget.initialLocation.longitude),
+                    markerId: const MarkerId('m1'))
               },
         onTap: widget.isSelecting ? _selectLocation : null,
         initialCameraPosition: CameraPosition(
